@@ -44,6 +44,7 @@ public class KVConfigManager {
 
     public void load() {
         String content = null;
+        // 通过 kvConfig 配置文件获取 kv 配置
         try {
             content = MixAll.file2String(this.namesrvController.getNamesrvConfig().getKvConfigPath());
         } catch (IOException e) {

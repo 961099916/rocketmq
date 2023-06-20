@@ -73,21 +73,26 @@ public class NamesrvController {
         this.configuration.setStorePathFromConfig(this.namesrvConfig, "configStorePath");
     }
 
+    /**
+     * 初始化
+     *
+     * @return boolean
+     */
     public boolean initialize() {
-
+        // 加载 KV 配置管理
         this.kvConfigManager.load();
-
+        // 创建Netty远程Server
         this.remotingServer = new NettyRemotingServer(this.nettyServerConfig, this.brokerHousekeepingService);
-
+        // 创建远程线程池
         this.remotingExecutor =
             Executors.newFixedThreadPool(nettyServerConfig.getServerWorkerThreads(), new ThreadFactoryImpl("RemotingExecutorThread_"));
-
+        // 注册处理器
         this.registerProcessor();
-
+        // 定时扫描未激活的Broker
         this.scheduledExecutorService.scheduleAtFixedRate(NamesrvController.this.routeInfoManager::scanNotActiveBroker, 5, 10, TimeUnit.SECONDS);
-
+        // 定时打印所有的
         this.scheduledExecutorService.scheduleAtFixedRate(NamesrvController.this.kvConfigManager::printAllPeriodically, 1, 10, TimeUnit.MINUTES);
-
+        // 若未禁用 tls 则开启
         if (TlsSystemConfig.tlsMode != TlsMode.DISABLED) {
             // Register a listener to reload SslContext
             try {
@@ -141,8 +146,9 @@ public class NamesrvController {
     }
 
     public void start() throws Exception {
+        // netty 启动
         this.remotingServer.start();
-
+        // tls 文件监控服启动
         if (this.fileWatchService != null) {
             this.fileWatchService.start();
         }
