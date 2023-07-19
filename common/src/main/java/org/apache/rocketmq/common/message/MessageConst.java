@@ -18,6 +18,12 @@ package org.apache.rocketmq.common.message;
 
 import java.util.HashSet;
 
+/**
+ * <p>Description: [消息扩展属性的Key]</p >
+ * Created on 2023/06/24
+ *
+ * @author 张家豪
+ */
 public class MessageConst {
     public static final String PROPERTY_KEYS = "KEYS";
     public static final String PROPERTY_TAGS = "TAGS";

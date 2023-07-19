@@ -88,9 +88,9 @@ public class NamesrvController {
             Executors.newFixedThreadPool(nettyServerConfig.getServerWorkerThreads(), new ThreadFactoryImpl("RemotingExecutorThread_"));
         // 注册处理器
         this.registerProcessor();
-        // 定时扫描未激活的Broker
+        // 每隔10s 扫描Broker 是否存活，移除不存活的Broker
         this.scheduledExecutorService.scheduleAtFixedRate(NamesrvController.this.routeInfoManager::scanNotActiveBroker, 5, 10, TimeUnit.SECONDS);
-        // 定时打印所有的
+        // 每隔十分钟定时打印KV配置
         this.scheduledExecutorService.scheduleAtFixedRate(NamesrvController.this.kvConfigManager::printAllPeriodically, 1, 10, TimeUnit.MINUTES);
         // 若未禁用 tls 则开启
         if (TlsSystemConfig.tlsMode != TlsMode.DISABLED) {
@@ -102,6 +102,7 @@ public class NamesrvController {
                         TlsSystemConfig.tlsServerKeyPath,
                         TlsSystemConfig.tlsServerTrustCertPath
                     },
+                        // 文件监听器
                     new FileWatchService.Listener() {
                         boolean certChanged, keyChanged = false;
                         @Override

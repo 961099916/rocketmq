@@ -17,14 +17,14 @@
 
 package org.apache.rocketmq.client;
 
-import static org.apache.rocketmq.common.topic.TopicValidator.isTopicOrGroupIllegal;
-
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.UtilAll;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.protocol.ResponseCode;
 import org.apache.rocketmq.common.topic.TopicValidator;
+
+import static org.apache.rocketmq.common.topic.TopicValidator.isTopicOrGroupIllegal;
 
 /**
  * Common Validator
@@ -53,6 +53,13 @@ public class Validators {
         }
     }
 
+    /**
+     * 检查消息: 消息体不为空, 消息体长度不为0, 消息体长度不超过默认的最大消息长度
+     *
+     * @param msg               味精
+     * @param defaultMQProducer 默认mqproducer
+     * @throws MQClientException mqclient例外
+     */
     public static void checkMessage(Message msg, DefaultMQProducer defaultMQProducer) throws MQClientException {
         if (null == msg) {
             throw new MQClientException(ResponseCode.MESSAGE_ILLEGAL, "the message is null");
@@ -72,7 +79,7 @@ public class Validators {
 
         if (msg.getBody().length > defaultMQProducer.getMaxMessageSize()) {
             throw new MQClientException(ResponseCode.MESSAGE_ILLEGAL,
-                "the message body size over max value, MAX: " + defaultMQProducer.getMaxMessageSize());
+                    "the message body size over max value, MAX: " + defaultMQProducer.getMaxMessageSize());
         }
     }
 
@@ -83,7 +90,7 @@ public class Validators {
 
         if (topic.length() > TOPIC_MAX_LENGTH) {
             throw new MQClientException(
-                String.format("The specified topic is longer than topic max length %d.", TOPIC_MAX_LENGTH), null);
+                    String.format("The specified topic is longer than topic max length %d.", TOPIC_MAX_LENGTH), null);
         }
 
         if (isTopicOrGroupIllegal(topic)) {
