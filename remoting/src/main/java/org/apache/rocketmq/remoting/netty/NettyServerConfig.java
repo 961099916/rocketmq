@@ -47,15 +47,25 @@ public class NettyServerConfig implements Cloneable {
     private int serverChannelMaxIdleTimeSeconds = 120;
 
     /**
-     * 网络socket发送缓存区大小，默认为64KB。
+     * 网络socket发送缓存区大小
      */
     private int serverSocketSndBufSize = NettySystemConfig.socketSndbufSize;
     /**
-     * 网络socket接收缓存区大小，默认为64KB。
+     * 网络socket接收缓存区大小
      */
     private int serverSocketRcvBufSize = NettySystemConfig.socketRcvbufSize;
+
+    /**
+     * 写入缓冲区最大值 默认0
+     */
     private int writeBufferHighWaterMark = NettySystemConfig.writeBufferHighWaterMark;
+    /**
+     * 写入缓冲区最小值 默认0
+     */
     private int writeBufferLowWaterMark = NettySystemConfig.writeBufferLowWaterMark;
+    /**
+     * 服务器套接字积压 默认1024
+     */
     private int serverSocketBacklog = NettySystemConfig.socketBacklog;
     /**
      * ByteBuffer是否开启缓存，建议开启。
@@ -63,11 +73,10 @@ public class NettyServerConfig implements Cloneable {
     private boolean serverPooledByteBufAllocatorEnable = true;
 
     /**
-     *
      * 是否启用Epoll I/O模型，Linux环境下建议开启。
      * make install
-     *
-     *
+     * <p>
+     * <p>
      * ../glibc-2.10.1/configure \ --prefix=/usr \ --with-headers=/usr/include \
      * --host=x86_64-linux-gnu \ --build=x86_64-pc-linux-gnu \ --without-gd
      */

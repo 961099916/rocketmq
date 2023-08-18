@@ -98,7 +98,7 @@ public class NamesrvStartup {
         final NettyServerConfig nettyServerConfig = new NettyServerConfig();
         // 设置监听端口
         nettyServerConfig.setListenPort(9876);
-        // 如果c 命令 Name server config properties file nameSrv的配置文件
+        // 如果存在 c 命令则读取文件配置 nettyConfig 和 nameSrvConfig
         if (commandLine.hasOption('c')) {
             // 获取配置文件路径
             String file = commandLine.getOptionValue('c');
